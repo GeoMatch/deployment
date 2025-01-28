@@ -51,7 +51,7 @@ resource "aws_cognito_user_pool" "this" {
 
   verification_message_template {
     default_email_option = "CONFIRM_WITH_CODE"
-    email_message = "Your verification code is {####}"
+    email_message = "Thank you for registering with GeoMatch! Your verification code is {####}"
     email_subject = "Your verification code"
   }
 
