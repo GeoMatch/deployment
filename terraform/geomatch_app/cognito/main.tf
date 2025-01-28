@@ -32,7 +32,7 @@ resource "aws_cognito_user_pool" "this" {
   admin_create_user_config {
     allow_admin_create_user_only = true
     invite_message_template {
-      email_message = "Welcome to GeoMatch! You have been invited to re-register your user account with geomatch.org. Your username is {username} and temporary password is {####}. Please access the portal using https://us.geomatch.org/login"
+      email_message = "Welcome to GeoMatch! You have been invited to access your user account with geomatch.org. Your new username is {username} and temporary password is {####}. Please access the portal using https://us.geomatch.org/login"
       email_subject = "GeoMatch Account Invitation"
     }
   }
