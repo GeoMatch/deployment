@@ -74,10 +74,11 @@ variable "cognito_module" {
     cognito_client_id = string
     cognito_user_pool_id = string
     cognito_client_secret = string
-    cognito_redirect_uri = string
+    cognito_redirect_uri = list(string)
     cognito_app_domain = string
     cognito_authorization_endpoint = string
-    cognito_allow_domain = string
+    cognito_allow_domain = list(string)
+    cognito_token_url = string
     #cognito_email_verification_message = string
     #cognito_email_verification_subject = string
   })
@@ -136,46 +137,3 @@ variable "alb_certificate_arn" {
   description = "Include if you want to override geomatch.org cert. Defaults to a cert for [var.geomatch_subdomain].geomatch.org"
   default     = null
 }
-
-/*
-  variable "cognito_client_id" {
-  type        = string
-  description = "AWS Cognito App Client ID"
-}
-
-variable "cognito_region" {
-  description = "The AWS region where Cognito is deployed"
-  type        = string
-}
-
-variable "cognito_user_pool_id" {
-  description = "The Cognito User Pool ID"
-  type        = string
-}
-
-variable "cognito_client_secret" {
-  description = "The Cognito Client Secret"
-  type        = string
-}
-
-variable "cognito_redirect_uri" {
-  description = "The Cognito Redirect URI"
-  type        = list(string)
-}
-
-variable "cognito_app_domain" {
-  description = "The Cognito App Domain"
-  type        = string
-}
-
-variable "cognito_authorization_endpoint" {
-  description = "The Cognito Authorization Endpoint"
-  type        = string
-}
-
-variable "cognito_allow_domain" {
-  description = "The Cognito Allow Domain"
-  type        = list(string)
-} 
-
-*/
