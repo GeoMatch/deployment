@@ -34,6 +34,7 @@ resource "aws_cognito_user_pool" "this" {
     invite_message_template {
       email_message = "Welcome to GeoMatch! You have been invited to access your user account with geomatch.org. Your new username is {username} and temporary password is {####}. Please access the portal using https://us.geomatch.org/login"
       email_subject = "GeoMatch Account Invitation"
+      sms_message   = "Your username is {username}. Sign up at {####} "
     }
   }
 
