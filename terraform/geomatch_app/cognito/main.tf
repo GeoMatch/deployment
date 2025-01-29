@@ -92,6 +92,6 @@ resource "aws_cognito_user_pool_client" "this" {
 resource "aws_cognito_user_pool_domain" "this" {
   domain = "${var.project}-${var.environment}-cognito"
   user_pool_id = aws_cognito_user_pool.this.id
-  auto_verified_attributes = ["email"]
+  #auto_verified_attributes = ["email"]
 
 }
