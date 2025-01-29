@@ -272,21 +272,21 @@ resource "aws_ecs_task_definition" "this" {
           "value" : var.cognito_module.cognito_client_secret
         },
         {
-          "name" : "COGNITO_REDIRECT_URI",
-          "value" : var.cognito_module.cognito_redirect_uri
-        },
-        {
           "name" : "COGNITO_APP_DOMAIN",
           "value" : var.cognito_module.cognito_app_domain
         },
         {
           "name" : "COGNITO_AUTHORIZATION_ENDPOINT",
           "value" : var.cognito_module.cognito_authorization_endpoint
+        },   
+        {
+          "name" : "COGNITO_TOKEN_URL",
+          "value" : var.cognito_module.cognito_token_url
         },
         {
-          "name" : "COGNITO_ALLOW_DOMAIN",
-          "value" : var.cognito_module.cognito_allow_domain
-        },           
+          "name" : "APP_DOMAIN",
+          "value" : "https://${var.geomatch_subdomain}.geomatch.org"
+        }        
       ],
       "secrets" : [
         {
