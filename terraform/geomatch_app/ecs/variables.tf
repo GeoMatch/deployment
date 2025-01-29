@@ -78,8 +78,8 @@ variable "cognito_module" {
     cognito_app_domain = string
     cognito_authorization_endpoint = string
     cognito_allow_domain = string
-    cognito_email_verification_message = string
-    cognito_email_verification_subject = string
+    #cognito_email_verification_message = string
+    #cognito_email_verification_subject = string
   })
 }
 
