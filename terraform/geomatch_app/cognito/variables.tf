@@ -26,35 +26,12 @@ variable "cognito_region" {
   type = string
 }
 
-variable "cognito_client_id" {
-  description = "The client ID of the user pool"
-  type = string
-}
-
-variable "cognito_user_pool_id" {
-  description = "The ID of the user pool"
-  type = string
-}
-
-variable "cognito_client_secret" {  
-  description = "The client secret of the user pool"
-  type = string
-}
 
 variable "cognito_redirect_uri" {
   description = "The redirect URI of the user pool"
   type = string
 }
 
-variable "cognito_app_domain" {
-  description = "The domain of the user pool"
-  type = string
-}
-
-variable "cognito_authorization_endpoint" {
-  description = "The authorization endpoint of the user pool"
-  type = string
-}
 
 variable "cognito_allow_domain" {
   description = "The CORS domain allowed for the user pool"
