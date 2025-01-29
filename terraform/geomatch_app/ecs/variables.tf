@@ -160,7 +160,7 @@ variable "cognito_client_secret" {
 
 variable "cognito_redirect_uri" {
   description = "The Cognito Redirect URI"
-  type        = string
+  type        = list(string)
 }
 
 variable "cognito_app_domain" {
@@ -175,7 +175,7 @@ variable "cognito_authorization_endpoint" {
 
 variable "cognito_allow_domain" {
   description = "The Cognito Allow Domain"
-  type        = string
+  type        = list(string)
 } 
 
 */
