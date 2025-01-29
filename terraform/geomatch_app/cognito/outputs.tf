@@ -53,6 +53,11 @@ output "cognito_authorization_endpoint" {
   value       = "${aws_cognito_user_pool.this.endpoint}/oauth2/authorize"
 }
 
+output "cognito_token_url" {
+  description = "The Cognito token get endpoint"
+  value       = "${aws_cognito_user_pool.this.endpoint}/oauth2/token"
+}
+
 output "cognito_allow_domain" {
   description = "The allowed domain for Cognito"
   value       = var.cognito_allow_domain
