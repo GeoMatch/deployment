@@ -96,7 +96,7 @@ resource "aws_cognito_user_pool_client" "this" {
   ]
   logout_urls = [
     "https://${var.subdomain}.${var.domain}/auth/login", 
-    "http://localhost:8000/auth/login"
+    "http://localhost:8000/login"
   ]
   allowed_oauth_flows = ["code"]
   allowed_oauth_scopes = ["email", "openid"]
