@@ -17,6 +17,14 @@ terraform {
 resource "aws_cognito_user_pool" "this" {
   name = "${var.project}-${var.environment}-cognito"
   mfa_configuration = "ON"
+  auto_verified_attributes = ["email"]
+
+  email_configuration {
+    email_sending_account = "DEVELOPER"
+    from_email_address = "no-reply@geomatch.org"
+    reply_to_email_address = "info@geomatch.org"
+    source_arn = "arn:aws:ses:us-east-1:363170352449:identity/geomatch.org"
+  }
 
   software_token_mfa_configuration {
     enabled = true
@@ -44,6 +52,11 @@ resource "aws_cognito_user_pool" "this" {
     require_lowercase = true
     require_numbers   = true
     require_symbols   = true
+    temporary_password_validity_days = 7
+  }
+
+  user_attribute_update_settings {
+    attributes_require_verification_before_update = ["email"]
   }
 
   username_configuration {
@@ -92,7 +105,5 @@ resource "aws_cognito_user_pool_client" "this" {
 
 resource "aws_cognito_user_pool_domain" "this" {
   domain = "${var.project}-${var.environment}-domain"
-  user_pool_id = aws_cognito_user_pool.this.id
-  #auto_verified_attributes = ["email"]
-
+  user_pool_id = aws_cognito_user_pool.this.id  
 }
