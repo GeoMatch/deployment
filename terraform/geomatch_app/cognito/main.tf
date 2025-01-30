@@ -90,8 +90,14 @@ resource "aws_cognito_user_pool_client" "this" {
   name = "${var.project}-${var.environment}-cognito-client"
   user_pool_id = aws_cognito_user_pool.this.id
   generate_secret = true
-  callback_urls = ["https://${var.subdomain}.${var.domain}/auth/callback"]
-  logout_urls = ["https://${var.subdomain}.${var.domain}/auth/login"]
+  callback_urls = [
+    "https://${var.subdomain}.${var.domain}/auth/callback", 
+    "http://localhost:8000/callback"
+  ]
+  logout_urls = [
+    "https://${var.subdomain}.${var.domain}/auth/login", 
+    "http://localhost:8000/auth/login"
+  ]
   allowed_oauth_flows = ["code"]
   allowed_oauth_scopes = ["email", "openid"]
   allowed_oauth_flows_user_pool_client = true
