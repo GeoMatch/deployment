@@ -32,7 +32,7 @@ resource "aws_cognito_user_pool" "this" {
 
   account_recovery_setting {
     recovery_mechanism {
-      name     = "admin_only"
+      name     = "verified_email"
       priority = 1
     }
   }
