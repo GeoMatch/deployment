@@ -14,6 +14,16 @@ terraform {
   required_version = ">= 1.1.8"
 }
 
+variable "cognito_redirect_uri" {
+  type = list(string)
+  description = "List of allowed redirect URIs"
+}
+
+variable "cognito_allow_domain" {
+  type = list(string)
+  description = "List of allowed domains"
+}
+
 resource "aws_cognito_user_pool" "this" {
   name = "${var.project}-${var.environment}-cognito"
   mfa_configuration = "ON"
@@ -90,14 +100,8 @@ resource "aws_cognito_user_pool_client" "this" {
   name = "${var.project}-${var.environment}-cognito-client"
   user_pool_id = aws_cognito_user_pool.this.id
   generate_secret = true
-  callback_urls = [
-    "https://${var.subdomain}.${var.domain}/auth/callback", 
-    "http://localhost:8000/callback"
-  ]
-  logout_urls = [
-    "https://${var.subdomain}.${var.domain}/auth/login", 
-    "http://localhost:8000/login"
-  ]
+  callback_urls = var.cognito_redirect_uri
+  logout_urls = ["https://${var.subdomain}.${var.domain}/login", "http://localhost:8000/login"]
   allowed_oauth_flows = ["code"]
   allowed_oauth_scopes = ["email", "openid"]
   allowed_oauth_flows_user_pool_client = true
