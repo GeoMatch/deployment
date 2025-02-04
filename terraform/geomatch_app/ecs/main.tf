@@ -273,7 +273,7 @@ resource "aws_ecs_task_definition" "this" {
         },
         {
           "name" : "COGNITO_APP_DOMAIN",
-          "value" : var.cognito_module.cognito_app_domain
+          "value" : "${var.cognito_module.cognito_app_domain}.${var.cognito_module.cognito_region}.amazoncognito.com"
         },
         {
           "name" : "COGNITO_AUTHORIZATION_ENDPOINT",
@@ -286,7 +286,11 @@ resource "aws_ecs_task_definition" "this" {
         {
           "name" : "APP_DOMAIN",
           "value" : "https://${var.geomatch_subdomain}.geomatch.org"
-        }                 
+        },
+        {
+          "name" : "COGNITO_REDIRECT_URI",
+          "value" : "https://${var.geomatch_subdomain}.geomatch.org/login"
+        }
       ],
       "secrets" : [
         {
