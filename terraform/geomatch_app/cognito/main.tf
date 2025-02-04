@@ -14,15 +14,7 @@ terraform {
   required_version = ">= 1.1.8"
 }
 
-variable "cognito_redirect_uri" {
-  type = list(string)
-  description = "List of allowed redirect URIs"
-}
 
-variable "cognito_allow_domain" {
-  type = list(string)
-  description = "List of allowed domains"
-}
 
 resource "aws_cognito_user_pool" "this" {
   name = "${var.project}-${var.environment}-cognito"
