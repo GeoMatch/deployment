@@ -293,7 +293,7 @@ resource "aws_ecs_task_definition" "this" {
         },
         {
           "name": "COGNITO_ALLOW_DOMAIN",
-          "value": var.congito_module.cognito_allow_domain
+          "value": var.cognito_module.cognito_allow_domain
         }
       ],
       "secrets" : [
