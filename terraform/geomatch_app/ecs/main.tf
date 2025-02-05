@@ -281,7 +281,7 @@ resource "aws_ecs_task_definition" "this" {
         },   
         {
           "name" : "COGNITO_TOKEN_URL",
-          "value" : var.cognito_module.cognito_token_url
+          "value" : "https://${var.cognito_module.cognito_token_url}"
         },        
         {
           "name" : "APP_DOMAIN",
