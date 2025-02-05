@@ -293,7 +293,7 @@ resource "aws_ecs_task_definition" "this" {
         },
         {
           "name": "COGNITO_ALLOW_DOMAIN",
-          "value": var.cognito_module.cognito_allow_domain
+          "value": "${var.geomatch_subdomain}.geomatch.org"
         }
       ],
       "secrets" : [

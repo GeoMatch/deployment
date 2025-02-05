@@ -32,12 +32,6 @@ variable "cognito_redirect_uri" {
   type = list(string)
 }
 
-
-variable "cognito_allow_domain" {
-  description = "The CORS domain allowed for the user pool"
-  type = list(string)
-}
-
 // Cognito variables for the user pool in a given region and environment
 variable "cognito_email_verification_message" {
   type = string

@@ -77,7 +77,6 @@ variable "cognito_module" {
     cognito_redirect_uri = list(string)
     cognito_app_domain = string
     cognito_authorization_endpoint = string
-    cognito_allow_domain = list(string)
     cognito_token_url = string
     #cognito_email_verification_message = string
     #cognito_email_verification_subject = string
