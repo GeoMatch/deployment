@@ -290,6 +290,10 @@ resource "aws_ecs_task_definition" "this" {
         {
           "name" : "COGNITO_REDIRECT_URI",
           "value" : "https://${var.geomatch_subdomain}.geomatch.org/callback"
+        },
+        {
+          "name": "COGNITO_ALLOW_DOMAIN",
+          "value": var.congito_module.cognito_allow_domain
         }
       ],
       "secrets" : [
