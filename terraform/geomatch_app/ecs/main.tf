@@ -67,7 +67,9 @@ resource "aws_iam_role" "ecs_task" {
         }
       ]
     })
+  }
 
+  inline_policy {
     name = "cognito_policy"
     policy = jsonencode({
       "Version" : "2012-10-17",
