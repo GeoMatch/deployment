@@ -79,9 +79,9 @@ resource "aws_iam_role" "ecs_task" {
           "Action" : [
             "cognito-idp:AdminCreateUser",
             "cognito-idp:AdminSetUserPassword",
-            "cognito-idp:AdminUpdateUserAttributes",
+            "cognito-idp:AdminUpdateUserAttributes"
           ],
-          "Resource" : var.cognito_module.cognito_user_pool_arn
+          "Resource" : var.cognito_module.cognito_user_pool_id
         }
       ]
     })
