@@ -57,3 +57,10 @@ output "cognito_token_url" {
   description = "The Cognito token get endpoint"
   value       = "${aws_cognito_user_pool.this.endpoint}/oauth2/token"
 }
+
+output "cognito_user_pool_arn" {
+  description = "The Cognito User Pool ARN"
+  value       = aws_cognito_user_pool.this.arn
+}
+
+
