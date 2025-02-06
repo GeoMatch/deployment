@@ -69,23 +69,23 @@ resource "aws_iam_role" "ecs_task" {
     })
   }
 
-  inline_policy {
-    name = "cognito_policy"
-    policy = jsonencode({
-      "Version" : "2012-10-17",
-      "Statement" : [
-        {
-          "Effect" : "Allow",
-          "Action" : [
-            "cognito-idp:AdminCreateUser",
-            "cognito-idp:AdminSetUserPassword",
-            "cognito-idp:AdminUpdateUserAttributes"
-          ],
-          "Resource" : var.cognito_module.arn
-        }
-      ]
-    })
-  }
+  #inline_policy {
+  #  name = "cognito_policy"
+  #  policy = jsonencode({
+  #    "Version" : "2012-10-17",
+  #    "Statement" : [
+  #      {
+  #        "Effect" : "Allow",
+  #        "Action" : [
+  #          "cognito-idp:AdminCreateUser",
+  #          "cognito-idp:AdminSetUserPassword",
+  #          "cognito-idp:AdminUpdateUserAttributes"
+  #        ],
+  #        "Resource" : var.cognito_module.arn
+  #      }
+  #    ]
+  #  })
+  #}
 
   inline_policy {
     name   = "efs_policy"
