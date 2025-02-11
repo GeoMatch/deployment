@@ -402,6 +402,10 @@ resource "aws_ecs_task_definition" "this" {
 
   cpu    = var.app_cpu
   memory = var.app_memory
+  # Add ephemeral storage configuration
+  ephemeral_storage {
+    size_in_gib = var.ephemeral_storage_size
+  }
 
   tags = {
     Project     = var.project
