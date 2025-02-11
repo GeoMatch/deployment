@@ -31,11 +31,8 @@ resource "aws_iam_role" "lambda_role" {
         Effect = "Allow"
         Principal = {
           Service = "lambda.amazonaws.com"
-<<<<<<< Updated upstream
         }
-=======
-        }        
->>>>>>> Stashed changes
+                
       }
     ]
   })
