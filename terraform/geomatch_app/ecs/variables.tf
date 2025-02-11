@@ -122,6 +122,17 @@ variable "app_memory" {
   default = 512 # MB
 }
 
+variable "ephemeral_storage_size" {
+  description = "The amount of ephemeral storage (in GiB) to allocate to the task. Min 21, max 200."
+  type        = number
+  default     = 21  # AWS Fargate default
+  
+  validation {
+    condition     = var.ephemeral_storage_size >= 21 && var.ephemeral_storage_size <= 200
+    error_message = "Ephemeral storage size must be between 21 and 200 GiB."
+  }
+}
+
 variable "db_instance_class" {
   type    = string
   default = "db.t3.micro"
