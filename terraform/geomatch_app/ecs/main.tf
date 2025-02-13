@@ -687,3 +687,47 @@ resource "aws_db_instance" "this" {
     Environment = var.environment
   }
 }
+
+resource "aws_lb_target_group" "lambda" {
+  name        = "${var.project}-${var.environment}-lambda-tg"
+  target_type = "lambda"
+
+  health_check {
+    enabled = false
+  }
+
+  tags = {
+    Project     = var.project
+    Environment = var.environment
+  }
+}
+
+resource "aws_lb_target_group_attachment" "lambda" {
+  target_group_arn = aws_lb_target_group.lambda.arn
+  target_id        = module.lambda.function_arn
+  depends_on       = [aws_lambda_permission.alb]
+}
+
+resource "aws_lb_listener_rule" "lambda" {
+  listener_arn = aws_lb_listener.https.arn
+  priority     = 100
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.lambda.arn
+  }
+
+  condition {
+    path_pattern {
+      values = ["/lambda/*"]
+    }
+  }
+}
+
+module "lambda" {
+  source = "../lambda"
+  
+  project         = var.project
+  environment     = var.environment
+  target_group_arn = aws_lb_target_group.lambda.arn
+}
