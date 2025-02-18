@@ -705,7 +705,7 @@ resource "aws_lb_target_group" "lambda" {
 resource "aws_lb_target_group_attachment" "lambda" {
   target_group_arn = aws_lb_target_group.lambda.arn
   target_id        = module.lambda.function_arn
-  depends_on       = [aws_lambda_permission.alb]
+  depends_on       = [module.lambda]
 }
 
 resource "aws_lb_listener_rule" "lambda" {
