@@ -90,3 +90,33 @@ resource "aws_alb" "this" {
   }
 }
 
+resource "aws_lb_target_group" "this" {
+  name        = local.name_prefix
+  target_type = "lambda"
+  
+  tags = {
+    Project     = var.project
+    Environment = var.environment
+    Name        = local.name_prefix
+  }
+}
+
+resource "aws_lb_listener" "https" {
+  load_balancer_arn = aws_alb.this.arn
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+  certificate_arn   = data.aws_acm_certificate.this.arn
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.this.arn
+  }
+}
+
+data "aws_acm_certificate" "this" {
+  domain      = var.acm_cert_domain
+  types       = ["AMAZON_ISSUED"]
+  statuses    = ["ISSUED"]
+  most_recent = true
+}
