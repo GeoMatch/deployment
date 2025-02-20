@@ -15,6 +15,11 @@ variable "ecr_name_suffix" {
   default = "app"
 }
 
+variable "idp_metadata_url" {
+  #set this to default to cognito idp 
+  de
+}
+
 variable "ssm_name_prefix" {
   type        = string
   description = "should be '/{project}/{environment}'"
