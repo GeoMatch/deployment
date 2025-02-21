@@ -33,6 +33,12 @@ variable "certificate_arn" {
   description = "ARN of the SSL certificate to use for HTTPS"
 }
 
+variable "acm_cert_domain" {
+  type = string
+  description = "ACM Certificate domain"
+  default     = null
+}
+
 variable "networking_module" {
   type = object({
     vpc_id                     = string
@@ -61,4 +67,5 @@ variable "cognito_module" {
     #cognito_email_verification_message = string
     #cognito_email_verification_subject = string
   })
+  default     = null
 }
