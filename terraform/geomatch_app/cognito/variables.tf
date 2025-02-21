@@ -17,7 +17,8 @@ variable "ecr_name_suffix" {
 
 variable "idp_metadata_url" {
   #set this to default to cognito idp 
-  de
+  default = "app"
+  type = string
 }
 
 variable "ssm_name_prefix" {
