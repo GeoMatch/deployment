@@ -11,8 +11,8 @@ resource "aws_lambda_function" "alb_lambda" {
   filename         = "${path.module}/lambda_function.zip"
   function_name    = "${var.project}-${var.environment}-alb-lambda"
   role            = aws_iam_role.lambda_role.arn
-  handler         = "index.handler"
-  runtime         = "nodejs18.x"
+  handler         = "index.lambda_handler"
+  runtime         = "python3.11"
   
   tags = {
     Project     = var.project
