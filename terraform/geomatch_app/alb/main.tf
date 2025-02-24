@@ -101,7 +101,7 @@ resource "aws_alb" "uat" {
   tags = {
     Project     = var.project
     Environment = var.environment
-    Name        = local.name_prefix
+    Name        = "${local.name_prefix}-uat"
   }
 }
 
@@ -117,7 +117,7 @@ resource "aws_lb_target_group" "uat" {
 }
 
 resource "aws_lb_listener" "https-uat" {
-  load_balancer_arn = aws_alb.this.arn
+  load_balancer_arn = aws_alb.uat.arn
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
