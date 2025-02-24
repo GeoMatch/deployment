@@ -10,16 +10,8 @@ output "alb_sg_arn" {
   value = aws_security_group.alb.arn
 }
 
-output "uat_alb_sg_arn" {
-  value = aws_security_group.uat.arn
-}
-
 output "alb_sg_id" {
   value = aws_security_group.alb.id
-}
-
-output "uat_alb_sg_id" {
-  value = aws_security_group.uat.id
 }
 
 output "target_group_arn" {
