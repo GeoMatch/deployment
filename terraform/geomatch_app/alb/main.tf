@@ -90,6 +90,21 @@ resource "aws_alb" "this" {
   }
 }
 
+resource "aws_alb" "uat" {
+  name               = "${local.name_prefix}-uat"
+  internal           = false
+  load_balancer_type = "application"
+  subnets            = [var.networking_module.one_zone_public_subnet_id, data.aws_subnets.public.ids[0]]
+  security_groups    = [aws_security_group.alb.id]
+  idle_timeout       = 60
+
+  tags = {
+    Project     = var.project
+    Environment = var.environment
+    Name        = local.name_prefix
+  }
+}
+
 resource "aws_lb_target_group" "uat" {
   name        = "${local.name_prefix}-uat-tg"
   target_type = "lambda"
