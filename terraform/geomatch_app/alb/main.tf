@@ -91,13 +91,13 @@ resource "aws_alb" "this" {
 }
 
 resource "aws_lb_target_group" "this" {
-  name        = local.name_prefix
+  name        = "${local.name_prefix}-uat"
   target_type = "lambda"
   
   tags = {
     Project     = var.project
     Environment = var.environment
-    Name        = local.name_prefix
+    Name        = "${local.name_prefix}-uat"
   }
 }
 
