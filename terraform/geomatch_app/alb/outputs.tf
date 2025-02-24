@@ -11,11 +11,11 @@ output "alb_sg_id" {
 }
 
 output "target_group_arn" {
-  value = aws_lb_target_group.this.arn
+  value = aws_lb_target_group.uat.arn
   description = "ARN of the target group"
 }
 
 output "listener_arn" {
-  value = aws_lb_listener.https.arn
+  value = aws_lb_listener.https-uat.arn
   description = "ARN of the listener"
 }
