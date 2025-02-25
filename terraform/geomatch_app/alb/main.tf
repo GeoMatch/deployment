@@ -91,6 +91,7 @@ resource "aws_alb" "this" {
 }
 
 resource "aws_alb" "uat" {
+  count              = var.require_cardinal_cloud_auth ? 1 : 0
   name               = "${local.name_prefix}-uat"
   internal           = false
   load_balancer_type = "application"
@@ -106,6 +107,7 @@ resource "aws_alb" "uat" {
 }
 
 resource "aws_lb_target_group" "uat" {
+  count              = var.require_cardinal_cloud_auth ? 1 : 0
   name        = "${local.name_prefix}-uat-tg"
   target_type = "lambda"
   
@@ -117,6 +119,7 @@ resource "aws_lb_target_group" "uat" {
 }
 
 resource "aws_lb_listener" "https-uat" {
+  count              = var.require_cardinal_cloud_auth ? 1 : 0
   load_balancer_arn = aws_alb.uat.arn
   port              = "443"
   protocol          = "HTTPS"
@@ -150,6 +153,7 @@ resource "aws_lb_listener" "https-uat" {
 }
 
 data "aws_acm_certificate" "this" {
+  count       = var.require_cardinal_cloud_auth ? 1 : 0
   domain      = var.acm_cert_domain
   types       = ["AMAZON_ISSUED"]
   statuses    = ["ISSUED"]

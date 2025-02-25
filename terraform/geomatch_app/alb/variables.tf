@@ -82,3 +82,12 @@ variable "cognito_module" {
   })
   default     = null
 }
+
+variable "require_cardinal_cloud_auth" {
+  type = bool
+  
+  validation {
+    condition     = var.require_cardinal_cloud_auth == false || var.cognito_module != null
+    error_message = "cognito_module must be provided when require_cardinal_cloud_auth is true"
+  }
+}
