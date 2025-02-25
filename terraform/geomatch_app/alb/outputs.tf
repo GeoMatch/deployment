@@ -3,7 +3,7 @@ output "alb_arn" {
 }
 
 output "uat_alb_arn" {
-  value = aws_alb.uat.arn
+  value = aws_alb.uat[0].arn
 }
 
 output "alb_sg_arn" {
@@ -15,11 +15,11 @@ output "alb_sg_id" {
 }
 
 output "target_group_arn" {
-  value = aws_lb_target_group.uat.arn
+  value = aws_lb_target_group.uat[0].arn
   description = "ARN of the target group"
 }
 
 output "listener_arn" {
-  value = aws_lb_listener.https-uat.arn
+  value = aws_lb_listener.https-uat[0].arn
   description = "ARN of the listener"
 }
