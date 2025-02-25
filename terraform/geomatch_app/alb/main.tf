@@ -123,9 +123,29 @@ resource "aws_lb_listener" "https-uat" {
   ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
   certificate_arn   = data.aws_acm_certificate.this.arn
 
+  # dynamic authentication action using AWS Cognito, 
+  # based on the require_cardinal_cloud_auth variable
+  dynamic "default_action" {
+    for_each = var.require_cardinal_cloud_auth ? [1] : []
+    content {
+      type = "authenticate-cognito"
+      authenticate_cognito {
+        user_pool_arn       = var.cognito_module.cognito_user_pool_arn
+        user_pool_client_id = var.cognito_module.cognito_client_id
+        user_pool_domain    = var.cognito_module.cognito_app_domain
+
+        authentication_request_extra_params = {
+          prompt = "login"
+        }
+      }
+      order = 1
+    }
+  }
+
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.uat.arn
+    order            = 2
   }
 }
 

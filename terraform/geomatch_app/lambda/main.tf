@@ -14,6 +14,11 @@ resource "aws_lambda_function" "alb_lambda" {
   handler         = "index.lambda_handler"
   runtime         = "python3.11"
   
+  vpc_config {
+    subnet_ids         = var.subnet_ids
+    security_group_ids = [var.security_group_id]
+  }
+
   tags = {
     Project     = var.project
     Environment = var.environment
@@ -37,7 +42,10 @@ resource "aws_iam_role" "lambda_role" {
     ]
   })
 
-  managed_policy_arns = ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"]
+  managed_policy_arns = [
+    "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole", 
+    "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+  ]
 
   tags = {
     Project     = var.project

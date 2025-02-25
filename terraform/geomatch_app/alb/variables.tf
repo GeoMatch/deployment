@@ -39,6 +39,17 @@ variable "acm_cert_domain" {
   default     = null
 }
 
+variable "subnet_ids" {
+  type = list(string)
+  description = "List of Subnet IDs for Lambda VPC"
+}
+
+variable "security_group_id" {
+  type = string
+  description = "Security group ID for Lambda VPC"
+}
+
+
 variable "networking_module" {
   type = object({
     vpc_id                     = string
