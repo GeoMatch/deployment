@@ -24,10 +24,6 @@ variable "su_vpn_end_user_cidr" {
   type = string
 }
 
-variable "require_cardinal_cloud_auth" {
-  type = bool
-}
-
 variable "certificate_arn" {
   type        = string
   description = "ARN of the SSL certificate to use for HTTPS"
