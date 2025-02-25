@@ -120,11 +120,11 @@ resource "aws_lb_target_group" "uat" {
 
 resource "aws_lb_listener" "https-uat" {
   count              = var.require_cardinal_cloud_auth ? 1 : 0
-  load_balancer_arn = aws_alb.uat.arn
+  load_balancer_arn = aws_alb.uat[0].arn
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
-  certificate_arn   = data.aws_acm_certificate.this.arn
+  certificate_arn   = data.aws_acm_certificate.this[0].arn
 
   # dynamic authentication action using AWS Cognito, 
   # based on the require_cardinal_cloud_auth variable
@@ -147,7 +147,7 @@ resource "aws_lb_listener" "https-uat" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.uat.arn
+    target_group_arn = aws_lb_target_group.uat[0].arn
     order            = 2
   }
 }
