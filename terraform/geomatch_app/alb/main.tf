@@ -137,6 +137,11 @@ resource "aws_lb_listener" "https-uat" {
         user_pool_client_id = var.cognito_module.cognito_client_id
         user_pool_domain    = var.cognito_module.cognito_app_domain
 
+        on_unauthenticated_request = "authenticate"
+        scope                      = "email openid"
+        session_cookie_name        = "AWSELBAuthSessionCookie"
+        session_timeout           = 3600
+
         authentication_request_extra_params = {
           prompt = "login"
           scope = "email openid"
