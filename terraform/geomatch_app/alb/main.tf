@@ -146,7 +146,7 @@ resource "aws_lb_listener" "https-uat" {
           prompt = "login"
           scope = "email openid"
           response_type = "code"
-          redirect_uri = join("", var.cognito_module.cognito_redirect_uri)
+          redirect_uri = var.cognito_module.cognito_redirect_uri[0]         
         }
       }
       order = 1
