@@ -23,3 +23,7 @@ output "listener_arn" {
   value = aws_lb_listener.https-uat[0].arn
   description = "ARN of the listener"
 }
+
+output "alb_subnet_ids" {
+  value = aws_alb.this.subnets
+}
