@@ -139,6 +139,9 @@ resource "aws_lb_listener" "https-uat" {
 
         authentication_request_extra_params = {
           prompt = "login"
+          scope = "email openid"
+          response_type = "code"
+          redirect_uri = "https://${var.acm_cert_domain}/callback"
         }
       }
       order = 1
