@@ -131,24 +131,20 @@ resource "aws_lb_listener" "https-uat" {
   dynamic "default_action" {
     for_each = var.require_cardinal_cloud_auth ? [1] : []
     content {
-      type = "authenticate-cognito"
-      authenticate_cognito {
-        user_pool_arn       = var.cognito_module.cognito_user_pool_arn
-        user_pool_client_id = var.cognito_module.cognito_client_id
-        user_pool_domain    = var.cognito_module.cognito_app_domain
+      type = "authenticate-oidc"
+      authenticate_oidc {
+        authorization_endpoint = "https://login.stanford.edu/idp/profile/oidc/authorize"
+        client_id             = var.stanford_oidc_client_id
+        client_secret         = var.stanford_oidc_client_secret
+        issuer               = "https://login.stanford.edu"
+        token_endpoint       = "https://login.stanford.edu/idp/profile/oidc/token"
+        user_info_endpoint   = "https://login.stanford.edu/idp/profile/oidc/userinfo"
 
         on_unauthenticated_request = "authenticate"
-        scope                      = "email openid"
+        scope                      = "openid email profile"
         session_cookie_name        = "AWSELBAuthSessionCookie"
-        session_timeout           = 3600
+        session_timeout            = 3600
 
-        authentication_request_extra_params = {
-          prompt = "login"
-          scope = "email openid"
-          response_type = "code"
-          redirect_uri = var.cognito_module.cognito_redirect_uri[0]         
-        }
-      }
       order = 1
     }
   }

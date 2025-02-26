@@ -75,3 +75,17 @@ variable "require_cardinal_cloud_auth" {
     error_message = "cognito_module must be provided when require_cardinal_cloud_auth is true"
   }
 }
+
+variable "stanford_oidc_client_id" {
+  description = "Client ID for Stanford OIDC authentication"
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
+variable "stanford_oidc_client_secret" {
+  description = "Client secret for Stanford OIDC authentication"
+  type        = string
+  sensitive   = true
+  default     = null
+}
