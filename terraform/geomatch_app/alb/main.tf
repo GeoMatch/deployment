@@ -138,15 +138,15 @@ resource "aws_lb_listener" "https-uat" {
         user_pool_domain    = var.cognito_module.cognito_app_domain
 
         on_unauthenticated_request = "authenticate"
-        scope                      = "email openid"
+        scope                      = var.cognito_module.scope 
         session_cookie_name        = "AWSELBAuthSessionCookie"
         session_timeout           = 3600
 
         authentication_request_extra_params = {
           prompt = "login"
-          scope = "email openid"
-          response_type = "code"
-          redirect_uri = "https://${var.acm_cert_domain}/callback"
+          scope = var.cognito_module.scope
+          response_type = var.cognito_module.response_type
+          redirect_uri = var.cognito_module.redirect_uri
         }
       }
       order = 1
