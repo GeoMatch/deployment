@@ -120,13 +120,13 @@ resource "aws_lb_target_group" "uat" {
 
 resource "aws_lb_target_group" "oauth_callback" {
   count       = var.require_cardinal_cloud_auth ? 1 : 0
-  name        = "${local.name_prefix}-oauth-callback"
+  name        = "${local.name_prefix}-callback"
   target_type = "lambda"
   
   tags = {
     Project     = var.project
     Environment = var.environment
-    Name        = "${local.name_prefix}-oauth-callback"
+    Name        = "${local.name_prefix}-callback"
   }
 }
 
@@ -171,7 +171,7 @@ resource "aws_lb_listener_rule" "oauth_callback" {
   }
 }
 
-# Rule 2 for Cognito authentication for all other paths
+# Rule for Cognito authentication for all other paths
 resource "aws_lb_listener_rule" "cognito_auth" {
   count        = var.require_cardinal_cloud_auth ? 1 : 0
   listener_arn = aws_lb_listener.https-uat[0].arn
