@@ -130,6 +130,13 @@ resource "aws_lb_target_group" "oauth_callback" {
   }
 }
 
+resource "aws_lb_target_group_attachment" "oauth_callback" {
+  count             = var.require_cardinal_cloud_auth ? 1 : 0
+  target_group_arn  = aws_lb_target_group.oauth_callback[0].arn
+  target_id         = var.lambda_module.function_arn
+  depends_on        = [aws_lb_target_group.oauth_callback]
+}
+
 resource "aws_lb_listener" "https-uat" {
   count              = var.require_cardinal_cloud_auth ? 1 : 0
   load_balancer_arn = aws_alb.uat[0].arn
@@ -158,7 +165,7 @@ resource "aws_lb_listener_rule" "oauth_callback" {
 
   condition {
     path_pattern {
-      values = ["/oauth2/idpresponse"]
+      values = ["/oauth2/idpresponse", "/oauth2/idpresponse/*"]
     }
   }
 
@@ -169,7 +176,7 @@ resource "aws_lb_listener_rule" "oauth_callback" {
   }
 }
 
-# Rule for Cognito authentication for all other paths
+# Rule 2 for Cognito authentication for all other paths
 resource "aws_lb_listener_rule" "cognito_auth" {
   count        = var.require_cardinal_cloud_auth ? 1 : 0
   listener_arn = aws_lb_listener.https-uat[0].arn
@@ -205,6 +212,13 @@ resource "aws_lb_listener_rule" "cognito_auth" {
     path_pattern {
       values = ["/*"]
     }
+  }
+
+  condition {
+    path_pattern {
+      values = ["/oauth2/idpresponse", "/oauth2/idpresponse/*"]
+    }
+    negate = true
   }
 
   tags = {
