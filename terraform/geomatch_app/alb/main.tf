@@ -208,13 +208,6 @@ resource "aws_lb_listener_rule" "cognito_auth" {
     }
   }
 
-  condition {
-    path_pattern {
-      values = ["/oauth2/idpresponse", "/oauth2/idpresponse/*"]
-    }
-    negate = true
-  }
-
   tags = {
     Project     = var.project
     Environment = var.environment
