@@ -130,12 +130,6 @@ resource "aws_lb_target_group" "oauth_callback" {
   }
 }
 
-resource "aws_lb_target_group_attachment" "oauth_callback" {
-  count             = var.require_cardinal_cloud_auth ? 1 : 0
-  target_group_arn  = aws_lb_target_group.oauth_callback[0].arn
-  target_id         = var.lambda_module.function_arn
-  depends_on        = [aws_lb_target_group.oauth_callback]
-}
 
 resource "aws_lb_listener" "https-uat" {
   count              = var.require_cardinal_cloud_auth ? 1 : 0
