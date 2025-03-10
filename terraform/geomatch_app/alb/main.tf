@@ -118,6 +118,18 @@ resource "aws_lb_target_group" "uat" {
   }
 }
 
+resource "aws_lb_target_group" "oauth_callback" {
+  count       = var.require_cardinal_cloud_auth ? 1 : 0
+  name        = "${local.name_prefix}-oauth-callback"
+  target_type = "lambda"
+  
+  tags = {
+    Project     = var.project
+    Environment = var.environment
+    Name        = "${local.name_prefix}-oauth-callback"
+  }
+}
+
 resource "aws_lb_listener" "https-uat" {
   count              = var.require_cardinal_cloud_auth ? 1 : 0
   load_balancer_arn = aws_alb.uat[0].arn
@@ -126,7 +138,20 @@ resource "aws_lb_listener" "https-uat" {
   ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
   certificate_arn   = data.aws_acm_certificate.this[0].arn
 
-  # dynamic authentication action using AWS Cognito, 
+  # First rule: OAuth2 callback path without authentication
+  default_action {
+    type = "forward"
+    target_group_arn = aws_lb_target_group.oauth_callback[0].arn
+    
+    condition {
+      path_pattern {
+        values = ["/oauth2/idpresponse"]
+      }
+    }
+    order = 1
+  }
+
+  # Second rule: Cognito authentication for all other paths
   # based on the require_cardinal_cloud_auth variable
   dynamic "default_action" {
     for_each = var.require_cardinal_cloud_auth ? [1] : []
@@ -149,14 +174,14 @@ resource "aws_lb_listener" "https-uat" {
           redirect_uri = var.cognito_module.cognito_redirect_uri[0]         
         }
       }
-      order = 1
+      order = 2
     }
   }
 
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.uat[0].arn
-    order            = 2
+    order            = 3
   }
 }
 
