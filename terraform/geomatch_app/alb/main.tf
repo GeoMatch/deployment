@@ -161,6 +161,12 @@ resource "aws_lb_listener_rule" "oauth_callback" {
       values = ["/oauth2/idpresponse"]
     }
   }
+
+  tags = {
+    Project     = var.project
+    Environment = var.environment
+    Name        = "open-callback-rule"
+  }
 }
 
 # Rule for Cognito authentication for all other paths
@@ -199,6 +205,12 @@ resource "aws_lb_listener_rule" "cognito_auth" {
     path_pattern {
       values = ["/*"]
     }
+  }
+
+  tags = {
+    Project     = var.project
+    Environment = var.environment
+    Name        = "cognito-auth-rule"
   }
 }
 
