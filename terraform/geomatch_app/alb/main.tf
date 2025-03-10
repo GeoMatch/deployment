@@ -141,15 +141,7 @@ resource "aws_lb_listener" "https-uat" {
   # First rule: OAuth2 callback path without authentication
   default_action {
     type = "forward"
-    target_group_arn = aws_lb_target_group.uat[0].arn
-
-    #target_group_arn = aws_lb_target_group.oauth_callback[0].arn
-    #condition {
-    #  path_pattern {
-    #    values = ["/oauth2/idpresponse"]
-    #  }
-    #}
-    #order = 1
+    target_group_arn = aws_lb_target_group.uat[0].arn    
   }  
 }
 
@@ -209,39 +201,6 @@ resource "aws_lb_listener_rule" "cognito_auth" {
     }
   }
 }
-
-# Second rule: Cognito authentication for all other paths
-  # based on the require_cardinal_cloud_auth variable
-#  dynamic "default_action" {
-#    for_each = var.require_cardinal_cloud_auth ? [1] : []
-#    content {
-#      type = "authenticate-cognito"
-#      authenticate_cognito {
-#        user_pool_arn       = var.cognito_module.cognito_user_pool_arn
-#        user_pool_client_id = var.cognito_module.cognito_client_id
-#        user_pool_domain    = var.cognito_module.cognito_app_domain
-
-#        on_unauthenticated_request = "authenticate"
-#        scope                      = "email openid"
-#        session_cookie_name        = "AWSELBAuthSessionCookie"
-#        session_timeout           = 3600
-
-#        authentication_request_extra_params = {
-#          prompt = "login"
-#          scope = "email openid"
-#          response_type = "code"
-#          redirect_uri = var.cognito_module.cognito_redirect_uri[0]         
-#        }
-#      }
-#      order = 2
-#    }
-#  }
-
-#  default_action {
-#    type             = "forward"
-#    target_group_arn = aws_lb_target_group.uat[0].arn
-#    order            = 3
-#  }
 
 data "aws_acm_certificate" "this" {
   count       = var.require_cardinal_cloud_auth ? 1 : 0
