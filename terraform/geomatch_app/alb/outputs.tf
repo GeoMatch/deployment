@@ -19,6 +19,11 @@ output "target_group_arn" {
   description = "ARN of the target group"
 }
 
+output "target_group_oauth_callback_arn" {
+  value = var.require_cardinal_cloud_auth ? aws_lb_target_group.oauth_callback[0].arn : null
+  description = "ARN of the target group for OAuth2 callback"
+}
+
 output "listener_arn" {
   value = var.require_cardinal_cloud_auth ? aws_lb_listener.https-uat[0].arn : null
   description = "ARN of the listener"

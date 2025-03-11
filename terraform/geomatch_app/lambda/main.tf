@@ -68,3 +68,9 @@ resource "aws_lb_target_group_attachment" "lambda" {
   target_id        = aws_lambda_function.alb_lambda.arn
   depends_on       = [aws_lambda_permission.allow_alb]
 }
+
+resource "aws_lb_target_group_attachment" "oauth_callback" {
+  target_group_arn = var.target_group_oauth_callback_arn
+  target_id        = aws_lambda_function.alb_lambda.arn
+  depends_on       = [aws_lambda_permission.allow_alb]
+}
