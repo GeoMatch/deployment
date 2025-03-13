@@ -33,20 +33,6 @@ resource "aws_security_group" "alb" {
   }
 }
 
-# resource "aws_vpc_security_group_ingress_rule" "inbound_80" {
-#   security_group_id = aws_security_group.alb.id
-#   from_port         = 80
-#   to_port           = 80
-#   ip_protocol       = "tcp"
-#   cidr_ipv4         = ["0.0.0.0/0"]
-
-#   tags = {
-#     Project     = var.project
-#     Environment = var.environment
-#     Name        = "${local.name_prefix}-inbound-80"
-#   }
-# }
-
 resource "aws_vpc_security_group_ingress_rule" "inbound_443" {
   security_group_id = aws_security_group.alb.id
   from_port         = 443
@@ -58,6 +44,20 @@ resource "aws_vpc_security_group_ingress_rule" "inbound_443" {
     Project     = var.project
     Environment = var.environment
     Name        = "${local.name_prefix}-inbound-443"
+  }
+}
+
+resource "aws_vpc_security_group_egress_rule" "outbound_lambda" {
+  security_group_id = aws_security_group.alb.id
+  from_port         = 0
+  to_port           = 0
+  ip_protocol       = "-1"
+  referenced_security_group_id = aws_security_group.alb.id
+
+  tags = {
+    Project     = var.project
+    Environment = var.environment
+    Name        = "${local.name_prefix}-outbound-lambda"
   }
 }
 
