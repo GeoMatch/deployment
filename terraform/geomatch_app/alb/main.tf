@@ -76,7 +76,7 @@ data "aws_subnets" "public" {
 // "If you're using Application Load Balancers, then cross-zone load balancing is always turned on."
 // We only run in one AZ, but use all public subnets anyway.
 resource "aws_alb" "this" {
-  name               = local.name_prefix
+  name               = "${local.name_prefix}"
   internal           = false
   load_balancer_type = "application"
   subnets            = [var.networking_module.one_zone_public_subnet_id, data.aws_subnets.public.ids[0]]
@@ -86,42 +86,30 @@ resource "aws_alb" "this" {
   tags = {
     Project     = var.project
     Environment = var.environment
-    Name        = local.name_prefix
+    Name        = "${local.name_prefix}"
   }
 }
 
-resource "aws_alb" "uat" {
-  count              = var.require_cardinal_cloud_auth ? 1 : 0
-  name               = "${local.name_prefix}-uat"
-  internal           = false
-  load_balancer_type = "application"
-  subnets            = [var.networking_module.one_zone_public_subnet_id, data.aws_subnets.public.ids[0]]
-  security_groups    = [aws_security_group.alb.id]
-  idle_timeout       = 60
-
-  tags = {
-    Project     = var.project
-    Environment = var.environment
-    Name        = "${local.name_prefix}-uat"
-  }
-}
-
-resource "aws_lb_target_group" "uat" {
-  count              = var.require_cardinal_cloud_auth ? 1 : 0
-  name        = "${local.name_prefix}-uat-tg"
-  target_type = "lambda"
+resource "aws_lb_target_group" "this" {
+  name        = "${local.name_prefix}-tg"
+  target_type = "ip"
+  protocol    = "HTTP"
+  port        = 8787 #Default RStudio server port 
+  vpc_id      = var.networking_module.vpc_id
   
   tags = {
     Project     = var.project
     Environment = var.environment
-    Name        = "${local.name_prefix}-uat-tg"
+    Name        = "${local.name_prefix}-tg"
   }
 }
 
 resource "aws_lb_target_group" "oauth_callback" {
-  count       = var.require_cardinal_cloud_auth ? 1 : 0
   name        = "${local.name_prefix}-callback"
-  target_type = "lambda"
+  target_type = "ip"
+  protocol    = "HTTP"
+  port        = 8787
+  vpc_id      = var.networking_module.vpc_id
   
   tags = {
     Project     = var.project
@@ -131,30 +119,28 @@ resource "aws_lb_target_group" "oauth_callback" {
 }
 
 
-resource "aws_lb_listener" "https-uat" {
-  count              = var.require_cardinal_cloud_auth ? 1 : 0
-  load_balancer_arn = aws_alb.uat[0].arn
+resource "aws_lb_listener" "https" {
+  load_balancer_arn = aws_alb.this.arn
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
-  certificate_arn   = data.aws_acm_certificate.this[0].arn
+  certificate_arn   = data.aws_acm_certificate.this.arn
 
   # First rule: OAuth2 callback path without authentication
   default_action {
     type = "forward"
-    target_group_arn = aws_lb_target_group.uat[0].arn    
+    target_group_arn = aws_lb_target_group.this.arn    
   }  
 }
 
 # Rule 1 for OAuth2 callback path without authentication
 resource "aws_lb_listener_rule" "oauth_callback" {
-  count        = var.require_cardinal_cloud_auth ? 1 : 0
-  listener_arn = aws_lb_listener.https-uat[0].arn
+  listener_arn = aws_lb_listener.https.arn
   priority     = 1
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.oauth_callback[0].arn
+    target_group_arn = aws_lb_target_group.oauth_callback.arn
   }
 
   condition {
@@ -172,8 +158,7 @@ resource "aws_lb_listener_rule" "oauth_callback" {
 
 # Rule 2 for Cognito authentication for all other paths
 resource "aws_lb_listener_rule" "cognito_auth" {
-  count        = var.require_cardinal_cloud_auth ? 1 : 0
-  listener_arn = aws_lb_listener.https-uat[0].arn
+  listener_arn = aws_lb_listener.https-uat.arn
   priority     = 2
 
   action {
@@ -199,7 +184,7 @@ resource "aws_lb_listener_rule" "cognito_auth" {
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.uat[0].arn
+    target_group_arn = aws_lb_target_group.this.arn
   }
 
   condition {
@@ -216,7 +201,6 @@ resource "aws_lb_listener_rule" "cognito_auth" {
 }
 
 data "aws_acm_certificate" "this" {
-  count       = var.require_cardinal_cloud_auth ? 1 : 0
   domain      = var.acm_cert_domain
   types       = ["AMAZON_ISSUED"]
   statuses    = ["ISSUED"]
