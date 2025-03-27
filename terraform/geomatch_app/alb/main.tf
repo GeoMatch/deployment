@@ -47,7 +47,7 @@ resource "aws_vpc_security_group_ingress_rule" "inbound_443" {
   }
 }
 
-resource "aws_vpc_security_group_egress_rule" "outbound_rstudio" {
+resource "aws_vpc_security_group_egress_rule" "internal" {
   security_group_id = aws_security_group.alb.id
   from_port         = 0
   to_port           = 0
