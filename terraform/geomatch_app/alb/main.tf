@@ -47,17 +47,17 @@ resource "aws_vpc_security_group_ingress_rule" "inbound_443" {
   }
 }
 
-resource "aws_vpc_security_group_egress_rule" "outbound_lambda" {
+resource "aws_vpc_security_group_egress_rule" "outbound_rstudio" {
   security_group_id = aws_security_group.alb.id
   from_port         = 0
   to_port           = 0
-  ip_protocol       = "-1"
-  referenced_security_group_id = aws_security_group.alb.id
+  ip_protocol       = "tcp"
+  cidr_ipv4         = var.networking_module.vpc_cidr  # Allow traffic to all instances in the VPC
 
   tags = {
     Project     = var.project
     Environment = var.environment
-    Name        = "${local.name_prefix}-outbound-lambda"
+    Name        = "${local.name_prefix}-outbound-rstudio"
   }
 }
 
