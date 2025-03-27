@@ -49,29 +49,3 @@ variable "networking_module" {
     tier_tag_public            = string
   })
 }
-
-variable "cognito_module" {
-  type = object({
-    cognito_region = string
-    cognito_client_id = string
-    cognito_user_pool_id = string
-    cognito_client_secret = string
-    cognito_redirect_uri = list(string)
-    cognito_app_domain = string
-    cognito_authorization_endpoint = string
-    cognito_token_url = string
-    cognito_user_pool_arn = string
-    #cognito_email_verification_message = string
-    #cognito_email_verification_subject = string
-  })
-  default     = null
-}
-
-variable "require_cardinal_cloud_auth" {
-  type = bool
-  
-  validation {
-    condition     = var.require_cardinal_cloud_auth == false || var.cognito_module != null
-    error_message = "cognito_module must be provided when require_cardinal_cloud_auth is true"
-  }
-}

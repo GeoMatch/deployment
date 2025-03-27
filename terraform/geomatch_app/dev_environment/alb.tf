@@ -23,7 +23,7 @@ resource "aws_lb_target_group" "this" {
 
 
 resource "aws_lb_target_group" "oauth_callback" {
-  name        = "${var.project}-${var.name}-callback"
+  name        = substr("${var.project}-${var.name}-cbk-callback", 0, 32)
   target_type = "ip"
   protocol    = "HTTP"
   port        = local.container_port_num
@@ -61,6 +61,11 @@ resource "aws_lb_listener_rule" "oauth_callback" {
       values = ["/oauth2/idpresponse", "/oauth2/idpresponse/*"]
     }
   }
+
+  depends_on = [
+    aws_lb_target_group.oauth_callback,
+    aws_lb_listener.https
+  ]
 
   tags = {
     Project     = var.project
@@ -105,6 +110,11 @@ resource "aws_lb_listener_rule" "cognito_auth" {
       values = ["/*"]
     }
   }
+
+  depends_on = [
+    aws_lb_target_group.this,
+    aws_lb_listener.https
+  ]
 
   tags = {
     Project     = var.project
