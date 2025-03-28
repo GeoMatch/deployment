@@ -52,7 +52,7 @@ resource "aws_vpc_security_group_egress_rule" "internal" {
   from_port         = 0
   to_port           = 0
   ip_protocol       = "tcp"
-  cidr_ipv4         = var.networking_module.vpc_cidr  # Allow traffic to all instances in the VPC
+  cidr_ipv4         = var.networking_module.cidr_block  # Allow traffic to all instances in the VPC
 
   tags = {
     Project     = var.project
