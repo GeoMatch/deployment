@@ -694,6 +694,8 @@ resource "aws_lb_target_group" "lambda" {
 
   health_check {
     enabled = false
+    interval = 35
+    timeout  = 30
   }
 
   tags = {
