@@ -7,13 +7,25 @@ terraform {
   }
 }
 
+data "archive_file" "lambda_zip" {
+  type        = "zip"
+  source_file = "${path.module}/index.py"
+  output_path = "${path.module}/lambda_function.zip"
+}
+
 resource "aws_lambda_function" "alb_lambda" {
-  filename         = "${path.module}/lambda_function.zip"
+  filename         = data.archive_file.lambda_zip.output_path
+  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
   function_name    = "${var.project}-${var.environment}-alb-lambda"
   role            = aws_iam_role.lambda_role.arn
-  handler         = "index.handler"
-  runtime         = "nodejs18.x"
+  handler         = "index.lambda_handler"
+  runtime         = "python3.11"
   
+  vpc_config {
+    subnet_ids         = var.subnet_ids
+    security_group_ids = [var.security_group_id]
+  }
+
   tags = {
     Project     = var.project
     Environment = var.environment
@@ -37,7 +49,10 @@ resource "aws_iam_role" "lambda_role" {
     ]
   })
 
-  managed_policy_arns = ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"]
+  managed_policy_arns = [
+    "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole", 
+    "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+  ]
 
   tags = {
     Project     = var.project
@@ -57,6 +72,12 @@ resource "aws_lambda_permission" "allow_alb" {
 # Create the target group attachment
 resource "aws_lb_target_group_attachment" "lambda" {
   target_group_arn = var.target_group_arn
+  target_id        = aws_lambda_function.alb_lambda.arn
+  depends_on       = [aws_lambda_permission.allow_alb]
+}
+
+resource "aws_lb_target_group_attachment" "oauth_callback" {
+  target_group_arn = var.target_group_oauth_callback_arn
   target_id        = aws_lambda_function.alb_lambda.arn
   depends_on       = [aws_lambda_permission.allow_alb]
 }
