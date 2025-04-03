@@ -7,8 +7,15 @@ terraform {
   }
 }
 
+data "archive_file" "lambda_zip" {
+  type        = "zip"
+  source_file = "${path.module}/index.py"
+  output_path = "${path.module}/lambda_function.zip"
+}
+
 resource "aws_lambda_function" "alb_lambda" {
-  filename         = "${path.module}/lambda_function.zip"
+  filename         = data.archive_file.lambda_zip.output_path
+  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
   function_name    = "${var.project}-${var.environment}-alb-lambda"
   role            = aws_iam_role.lambda_role.arn
   handler         = "index.lambda_handler"
