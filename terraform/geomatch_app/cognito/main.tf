@@ -103,10 +103,6 @@ resource "aws_cognito_user_pool_client" "this" {
     "ALLOW_USER_SRP_AUTH",      # Allow Secure Remote Password authentication
     "ALLOW_REFRESH_TOKEN_AUTH"  # Recommended for token refresh functionality
   ]
-
-  // Add token validity settings
-  auth_flow_session_duration = 4 // in minutes
-
 }
 
 resource "aws_cognito_user_pool_domain" "this" {
