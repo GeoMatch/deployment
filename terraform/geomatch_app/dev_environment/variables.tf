@@ -145,3 +145,19 @@ variable "alb_module" {
   })
 }
 
+variable "cognito_module" {
+  type = object({
+    cognito_region = string
+    cognito_client_id = string
+    cognito_user_pool_id = string
+    cognito_client_secret = string
+    cognito_redirect_uri = list(string)
+    cognito_app_domain = string
+    cognito_authorization_endpoint = string
+    cognito_token_url = string
+    cognito_user_pool_arn = string
+    #cognito_email_verification_message = string
+    #cognito_email_verification_subject = string
+  })
+  default     = null
+}

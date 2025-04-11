@@ -33,20 +33,6 @@ resource "aws_security_group" "alb" {
   }
 }
 
-# resource "aws_vpc_security_group_ingress_rule" "inbound_80" {
-#   security_group_id = aws_security_group.alb.id
-#   from_port         = 80
-#   to_port           = 80
-#   ip_protocol       = "tcp"
-#   cidr_ipv4         = ["0.0.0.0/0"]
-
-#   tags = {
-#     Project     = var.project
-#     Environment = var.environment
-#     Name        = "${local.name_prefix}-inbound-80"
-#   }
-# }
-
 resource "aws_vpc_security_group_ingress_rule" "inbound_443" {
   security_group_id = aws_security_group.alb.id
   from_port         = 443
@@ -58,6 +44,20 @@ resource "aws_vpc_security_group_ingress_rule" "inbound_443" {
     Project     = var.project
     Environment = var.environment
     Name        = "${local.name_prefix}-inbound-443"
+  }
+}
+
+resource "aws_vpc_security_group_egress_rule" "internal" {
+  security_group_id = aws_security_group.alb.id
+  from_port         = 0
+  to_port           = 0
+  ip_protocol       = "tcp"
+  cidr_ipv4         = var.networking_module.cidr_block  # Allow traffic to all instances in the VPC
+
+  tags = {
+    Project     = var.project
+    Environment = var.environment
+    Name        = "${local.name_prefix}-outbound-rstudio"
   }
 }
 
@@ -76,7 +76,7 @@ data "aws_subnets" "public" {
 // "If you're using Application Load Balancers, then cross-zone load balancing is always turned on."
 // We only run in one AZ, but use all public subnets anyway.
 resource "aws_alb" "this" {
-  name               = local.name_prefix
+  name               = "${local.name_prefix}"
   internal           = false
   load_balancer_type = "application"
   subnets            = [var.networking_module.one_zone_public_subnet_id, data.aws_subnets.public.ids[0]]
@@ -86,7 +86,13 @@ resource "aws_alb" "this" {
   tags = {
     Project     = var.project
     Environment = var.environment
-    Name        = local.name_prefix
+    Name        = "${local.name_prefix}"
   }
 }
 
+data "aws_acm_certificate" "this" {
+  domain      = var.acm_cert_domain
+  types       = ["AMAZON_ISSUED"]
+  statuses    = ["ISSUED"]
+  most_recent = true
+}
