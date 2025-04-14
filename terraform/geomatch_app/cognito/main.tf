@@ -127,6 +127,5 @@ resource "aws_cognito_identity_provider" "external" {
   attribute_mapping = var.external_providers[count.index].attribute_mapping
 
   # Additional settings for SAML
-  saml_provider_arn = ""  # Optional, if you have a specific ARN
   idp_identifiers = var.external_providers[count.index].identifiers
 }
