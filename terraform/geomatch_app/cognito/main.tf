@@ -109,3 +109,24 @@ resource "aws_cognito_user_pool_domain" "this" {
   domain = "${var.project}-${var.environment}-domain"
   user_pool_id = aws_cognito_user_pool.this.id  
 }
+
+resource "aws_cognito_identity_provider" "external" {
+  count = length(var.external_providers)
+
+  user_pool_id = aws_cognito_user_pool.this.id
+  provider_name = var.external_providers[count.index].provider_name
+  provider_type = var.external_providers[count.index].provider_type
+
+  provider_details = {
+    MetadataURL = var.external_providers[count.index].metadata_url
+    IDPSignout = tostring(var.external_providers[count.index].sign_out_flow)
+    SignRequest = tostring(var.external_providers[count.index].sign_saml_requests)
+    MetadataFile = ""  # Optional, if you have a local metadata file
+  }
+
+  attribute_mapping = var.external_providers[count.index].attribute_mapping
+
+  # Additional settings for SAML
+  saml_provider_arn = ""  # Optional, if you have a specific ARN
+  idp_identifiers = var.external_providers[count.index].identifiers
+}

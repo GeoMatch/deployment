@@ -30,7 +30,7 @@ resource "aws_security_group" "ecs" {
 resource "aws_vpc_security_group_egress_rule" "alb_egress_to_ecs" {
   security_group_id            = var.alb_module.alb_sg_id
   ip_protocol                  = -1
-  referenced_security_group_id = aws_security_group.ecs.id
+  cidr_ipv4         = "0.0.0.0/0"  // Allow all outbound traffic to support ALB <-> Cognito path
 
   tags = {
     Project     = var.project
