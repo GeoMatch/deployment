@@ -68,3 +68,18 @@ variable "domain" {
   description = "The domain for the Cognito callback URLs"
   type        = string
 }
+
+variable "external_providers" {
+  description = "List of external identity providers to be added to the Cognito user pool"
+  type = list(object({
+    provider_name = string
+    provider_type = string
+    metadata_url  = string
+    attribute_mapping = map(string)
+    identifiers = list(string)
+    sign_out_flow = bool
+    sign_saml_requests = bool 
+    require_encrypted_assertions = bool
+  }))
+  default = []
+}
