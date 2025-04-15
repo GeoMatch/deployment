@@ -43,7 +43,7 @@ This module sets up an AWS Cognito User Pool with various configurations and out
 
 ## Configuration Notes
 
-- **Stanford iDP Configuration**: By default, the Stanford iDP is configured to require encryption. However, this terraform module does not do a great job of enabling encryption by default.Users must manually enable the checkboxes for "Sign SAML requests to this provider" and "Require encrypted SAML assertions from this provider" in the Cognito console.
+- **Stanford iDP Configuration**: Please refer to the additional resources section as well as notes on the top for configuring Stanford iDP.
 
 ## Resources
 
@@ -51,34 +51,9 @@ This module sets up an AWS Cognito User Pool with various configurations and out
 
 The module creates an AWS Cognito User Pool with the following configurations:
 
-- **Name**: Constructed using the format `${var.project}-${var.environment}-cognito`.
-- **MFA Configuration**: Multi-Factor Authentication is enabled.
-- **Auto-Verified Attributes**: Email is set to be auto-verified.
-- **Email Configuration**: Uses a developer email sending account with specified from and reply-to addresses.
-- **Software Token MFA**: Enabled for additional security.
-- **Account Recovery**: Configured to use verified email as the recovery mechanism.
-- **Admin Create User Config**: Allows only admin to create users with a custom invitation message.
-- **Password Policy**: Enforces a strong password policy with a minimum length and complexity requirements.
-- **User Attribute Update Settings**: Requires email verification before updates.
-- **Username Configuration**: Case insensitive usernames.
-- **Verification Message Template**: Custom email message and subject for verification.
-- **Schema**: Includes an email attribute with constraints.
-
 ### User Pool Client
 
-- **Name**: Constructed using the format `${var.project}-${var.environment}-cognito-client`.
-- **User Pool ID**: Associated with the created user pool.
-- **Generate Secret**: Enabled to generate a client secret.
-- **Callback URLs**: Configured with redirect URIs.
-- **Logout URLs**: Includes URLs for logout redirection.
-- **Allowed OAuth Flows**: Supports the "code" flow.
-- **Allowed OAuth Scopes**: Includes "email" and "openid".
-- **Explicit Auth Flows**: Supports password, SRP, and refresh token authentication.
-
 ### User Pool Domain
-
-- **Domain**: Constructed using the format `${var.project}-${var.environment}-domain`.
-- **User Pool ID**: Associated with the created user pool.
 
 ### Identity Provider
 
