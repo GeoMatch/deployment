@@ -97,4 +97,26 @@ For more information on integrating with Stanford's SAML service, you can refer 
 - [Onboarding a Service Provider with Stanford SAML](https://uit.stanford.edu/service/saml/onboard-service-provider)
 - [Stanford SAML Exception Handling](https://uit.stanford.edu/service/saml/exception)
 - [Stanford FarmFed SAML Service](https://uit.stanford.edu/service/saml/farmfed)
-- [SPDB Management Portal](https://spdb-prod.iam.stanford.edu/spconfigs) 
+- [SPDB Management Portal](https://spdb-prod.iam.stanford.edu/spconfigs)
+
+### Authentication Flow
+
+Here's how the authentication flow works:
+
+1. The user accesses your application through the ALB (Application Load Balancer).
+2. The ALB initiates authentication with Cognito.
+3. Cognito redirects the user to Stanford IdP for authentication.
+4. After successful authentication, Stanford IdP sends a SAML assertion back to Cognito.
+5. Cognito processes the SAML assertion and redirects back to the ALB.
+6. The ALB forwards the authenticated request to the target group.
+7. The target group routes the request to your AWS Lambda function.
+
+### Implementation Steps
+
+To implement this flow:
+
+- Configure your ALB listener rule to use Cognito for authentication.
+- Set up your Cognito User Pool with Stanford University as a SAML identity provider.
+- Configure the callback URL in your Cognito User Pool client settings to point to your ALB: `https://your-alb-dns/oauth2/idpresponse`.
+- Ensure your Stanford IdP is correctly set up to send SAML assertions to Cognito.
+- Configure your ALB to forward authenticated requests to your target group containing the Lambda function.
