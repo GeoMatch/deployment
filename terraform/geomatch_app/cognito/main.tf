@@ -120,7 +120,7 @@ resource "aws_cognito_identity_provider" "external" {
   provider_details = {
     MetadataURL = var.external_providers[count.index].metadata_url
     IDPSignout = tostring(var.external_providers[count.index].sign_out_flow)
-    SignRequest = tostring(var.external_providers[count.index].sign_saml_requests)
+    //SignRequest = tostring(var.external_providers[count.index].sign_saml_requests)
     MetadataFile = ""  # Optional, if you have a local metadata file
   }
 
