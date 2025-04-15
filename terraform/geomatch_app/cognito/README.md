@@ -19,7 +19,7 @@ This module sets up an AWS Cognito User Pool with various configurations and out
 - **cognito_allow_email_address**: (string) Allow email address for Cognito.
 - **subdomain**: (string) Subdomain for the application (e.g., 'us').
 - **domain**: (string) The domain for the Cognito callback URLs.
-- **external_providers**: (list of objects) List of external identity providers to be added to the Cognito user pool. Each object includes:
+- **external_providers**: (list of objects) List of external identity providers to be added to the Cognito user pool (SPDB attribute mapping linked in additional resources). Each object includes:
   - **provider_name**: (string) Name of the provider.
   - **provider_type**: (string) Type of the provider.
   - **metadata_url**: (string) Metadata URL for the provider.
@@ -62,6 +62,7 @@ For more information on integrating with Stanford's SAML service, you can refer 
 - [Stanford SAML Exception Handling](https://uit.stanford.edu/service/saml/exception)
 - [Stanford FarmFed SAML Service](https://uit.stanford.edu/service/saml/farmfed)
 - [SPDB Management Portal](https://spdb-prod.iam.stanford.edu/spconfigs)
+- [Attribute Mapping](https://uit.stanford.edu/service/saml/arp)
 
 ### Authentication Flow
 
