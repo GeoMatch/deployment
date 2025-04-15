@@ -110,8 +110,13 @@ resource "aws_cognito_user_pool_domain" "this" {
   user_pool_id = aws_cognito_user_pool.this.id  
 }
 
+data "aws_cognito_identity_provider" "existing" {
+     user_pool_id = aws_cognito_user_pool.this.id
+     provider_name = "Stanford-iDP"  # Replace with your actual provider name
+ }
+
 resource "aws_cognito_identity_provider" "external" {
-  count = length(var.external_providers)
+  count = data.aws_cognito_identity_provider.existing.id == "" ? 1 : 0
 
   user_pool_id = aws_cognito_user_pool.this.id
   provider_name = var.external_providers[count.index].provider_name
