@@ -90,3 +90,11 @@ The module supports external identity providers with the following configuration
 - **Attribute Mapping**: Configurable mapping for user attributes.
 - **IDP Identifiers**: Configurable identifiers for the identity provider.
 
+## Additional Resources
+
+For more information on integrating with Stanford's SAML service, you can refer to the following resources:
+
+- [Onboarding a Service Provider with Stanford SAML](https://uit.stanford.edu/service/saml/onboard-service-provider)
+- [Stanford SAML Exception Handling](https://uit.stanford.edu/service/saml/exception)
+- [Stanford FarmFed SAML Service](https://uit.stanford.edu/service/saml/farmfed)
+- [SPDB Management Portal](https://spdb-prod.iam.stanford.edu/spconfigs) 
