@@ -29,17 +29,6 @@ This module sets up an AWS Cognito User Pool with various configurations and out
   - **sign_saml_requests**: (bool) Whether to sign SAML requests.
   - **require_encrypted_assertions**: (bool) Whether to require encrypted assertions.
 
-## Outputs
-
-- **cognito_region**: The AWS region where Cognito resources are created.
-- **cognito_client_id**: The Cognito User Pool Client ID.
-- **cognito_user_pool_id**: The Cognito User Pool ID.
-- **cognito_client_secret**: The Cognito User Pool Client Secret (sensitive).
-- **cognito_redirect_uri**: The Cognito redirect URI.
-- **cognito_app_domain**: The Cognito app domain.
-- **cognito_authorization_endpoint**: The Cognito authorization endpoint.
-- **cognito_token_url**: The Cognito token get endpoint.
-- **cognito_user_pool_arn**: The Cognito User Pool ARN.
 
 ## Configuration Notes
 
