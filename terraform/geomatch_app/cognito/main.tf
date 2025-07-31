@@ -120,6 +120,8 @@ resource "aws_cognito_identity_provider" "external" {
   provider_details = {
     MetadataURL = var.external_providers[count.index].metadata_url
     IDPSignout  = tostring(var.external_providers[count.index].sign_out_flow)
+    RequestSigningAlgorithm = "rsa-sha256"
+    EncryptedResponses = true
     //SignRequest = tostring(var.external_providers[count.index].sign_saml_requests)
   }
 
@@ -133,8 +135,8 @@ resource "aws_cognito_identity_provider" "external" {
     ignore_changes = [
       provider_details["SSORedirectBindingURI"],
       provider_details["SLORedirectBindingURI"],
-      provider_details["RequestSigningAlgorithm"],
-      provider_details["EncryptedResponses"],
+      # provider_details["RequestSigningAlgorithm"],
+      # provider_details["EncryptedResponses"],
       provider_details["ActiveEncryptionCertificate"]
     ]
   }
