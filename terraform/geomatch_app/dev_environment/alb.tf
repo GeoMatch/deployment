@@ -7,12 +7,12 @@ resource "aws_lb_target_group" "this" {
 
   health_check {
     healthy_threshold   = "3"
-    interval            = "30"
+    unhealthy_threshold = "4"
+    interval            = "60"
     protocol            = "HTTP"
     matcher             = "200"
     timeout             = "20"
     path                = var.health_check_path
-    unhealthy_threshold = "3"
   }
 
   tags = {
